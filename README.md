@@ -1,20 +1,18 @@
-# Better RTX Installer
+# Better RTX Installer MCLauncher Fork
+
+This is a fork of the official BetterRTX Installer that does not require IObit. This version will only work if you installed the game in a different directory than the protected directory Microsoft forces you to install by default. 
+
+Due to not being in a protected area, we can use normal poweershell copy/delete commands to push the files, automating the process of moving the files without needing to use a program (OIbit as an example) to escalate priviledges higher than Microsoft wants us to attain.
 
 ## Installation
 
-> [download](https://github.com/BetterRTX/BetterRTX-Installer/releases) the installer script and run as an admin with `Set-ExecutionPolicy -Scope CurrentUser Bypass` enabled.
-
+> [download](https://github.com/Uzephi/BetterRTX-Installer/releases) the installer script
 ### Prerequisites
 
 - Use software like
   [MCLauncher](https://github.com/MCMrARM/mc-w10-version-launcher) or
   [Bedrock Launcher](https://github.com/BedrockLauncher/BedrockLauncher) to
   easily create a side-loaded Minecraft installation.
-- **OR** download [IOBit Unlocker](https://www.iobit.com/en/iobit-unlocker.php)
-  to allow copying to Minecraft Launcher/Windows Store installations.
-- **OR** use
-  [BetterRenderDragon](https://github.com/ddf8196/BetterRenderDragon/releases)
-  with a [BetterRTX `.mcpack` release](https://bedrock.graphics/release/latest). (BetterRTX Installer not required.)
 
 ## Usage
 
