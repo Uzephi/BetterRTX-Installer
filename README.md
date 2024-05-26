@@ -2,7 +2,7 @@
 
 This is a fork of the official BetterRTX Installer that does not require IObit. This version will only work if you installed the game in a different directory than the protected directory Microsoft forces you to install by default. 
 
-Due to not being in a protected area, we can use normal poweershell copy/delete commands to push the files, automating the process of moving the files without needing to use a program (OIbit as an example) to escalate priviledges higher than Microsoft wants us to attain.
+Due to not being in a protected area, we can use normal powershell copy/delete commands to push the files, automating the process of moving the files without needing to use a program (OIbit as an example) to escalate privileges higher than Microsoft wants us to attain.
 
 ## Installation
 
