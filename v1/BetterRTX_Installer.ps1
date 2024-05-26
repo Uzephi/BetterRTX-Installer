@@ -41,7 +41,7 @@ try {
     }
 }
 catch {
-    $configstr = '{ "dev":false, "url":"https://bedrock.graphics/api", "uninstall-rtxstub-endpoint":"https://bedrock.graphics/api/uninstall/rtxstub", "uninstall-rtxpostfx-endpoint":"https://bedrock.graphics/api/uninstall/rtxpostfx", "iobit-unlocker-location":"C:/Program Files (x86)/IObit/IObit Unlocker/IObitUnlocker.exe", "dlssURL":"https://bedrock.graphics/api/dlss"}' 
+    $configstr = '{ "dev":false, "url":"https://bedrock.graphics/api", "uninstall-rtxstub-endpoint":"https://bedrock.graphics/api/uninstall/rtxstub", "uninstall-rtxpostfx-endpoint":"https://bedrock.graphics/api/uninstall/rtxpostfx", "dlssURL":"https://bedrock.graphics/api/dlss"}' 
     $config = ConvertFrom-Json $configstr
 }
 
@@ -302,9 +302,9 @@ Switch ($selection) {
             Remove-Item $tonemapping
         }
         Write-Host $lang.insertingVanillaStub
-        Copy-Item $newStub $materialsLocation
+        Copy-Item $newStub $rtxStub
         Write-Host $lang.insertingVanillaTonemapping 
-        Copy-Item $newTonemapping
+        Copy-Item $newTonemapping $tonemapping
         Remove-Item $newTonemapping
         Remove-Item $newStub
         Write-Host ""
@@ -349,16 +349,16 @@ Write-Host ""
 # Installs BetterRTX
 if ([System.IO.File]::Exists($rtxStub)) {
     Write-Host $lang.removingStub
-    Copy-Item $rtxStub
+    Remove-Item $rtxStub
 }
 if ([System.IO.File]::Exists($tonemapping)) {
     Write-Host $lang.removingTonemapping
-    Copy-Item $tonemapping
+    Remove-Item $tonemapping
 }
 Write-Host $lang.insertingStub
-Copy-Item $newStub $materialsLocation
+Copy-Item $newStub $rtxStub
 Write-Host $lang.insertingTonemapping
-Copy-Item $newTonemapping $materialsLocation
+Copy-Item $newTonemapping $tonemapping
 if (-not($selection -eq 2)) {
     Remove-Item $newTonemapping
     Remove-Item $newStub
