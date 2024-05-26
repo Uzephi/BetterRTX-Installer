@@ -5,7 +5,6 @@ if ($True -eq (($null -ne $minecraftVersion) -and ($null -ne $filesLocation))) {
     # Automated Installation
     # Path: installer.ps1
     # Sets Up File, App, And URL Locations
-    $iobu = "C:\Program Files (x86)\IObit\IObit Unlocker\IObitUnlocker.exe"
     $materialsLocation = Join-Path $installationLocation "data\renderer\materials";
     $tonemapping = Join-Path $materialsLocation "RTXPostFX.Tonemapping.material.bin";
     $rtxStub = Join-Path $materialsLocation "RTXStub.material.bin";
@@ -75,11 +74,6 @@ installerLocationChoice1Numeral = 1
 installerLocationChoice2Numeral = 2
 installerLocationChoice3Numeral = 3
 installerLocationChoice4Numeral = 4
-
-checkingForIOBitUnlocker = Checking for IOBit Unlocker...
-IOBitUnlockerCheckPass = IObit Unlocker is installed, Continuing...
-IOBitUnlockerCheckFail = IObit Unlocker is not installed
-IOBitUnlockerPleaseInstall = Please install IObit Unlocker and try again
 
 checkingForMinecraft = Checking for Minecraft...
 MinecraftCheckPass = Minecraft is installed, Continuing...
@@ -209,7 +203,6 @@ Switch ($location) {
 Clear-Host
 # Path: installer.ps1
 # Sets Up File, App, And URL Locations
-$iobu = "C:\Program Files (x86)\IObit\IObit Unlocker\IObitUnlocker.exe"
 $materialsLocation = Join-Path $installationLocation "data\renderer\materials";
 $tonemapping = Join-Path $materialsLocation "RTXPostFX.Tonemapping.material.bin";
 $rtxStub = Join-Path $materialsLocation "RTXStub.material.bin";
@@ -223,18 +216,6 @@ $uninstallTonemapping = $config."uninstall-rtxpostfx-endpoint" #"https://average
 InstallerLogo
 Write-Host ""
 
-# checks for IOBit Unlocker
-Write-Host $lang.checkingForIObitUnlocker
-if (([System.IO.File]::Exists($iobu))) {
-    Write-Host $lang.IOBitUnlockerCheckPass
-}
-else {
-    Write-Error $lang.IOBitUnlockerCheckFail
-    Write-Error $lang.IOBitUnlockerPleaseInstall
-    Write-Host "https://www.iobit.com/en/iobit-unlocker.php"
-    Start-Sleep -Seconds 10
-    exit
-}
 
 Clear-Host
 InstallerLogo
@@ -314,16 +295,16 @@ Switch ($selection) {
         Invoke-WebRequest -URI $uninstallTonemapping -OutFile $newTonemapping -UseBasicParsing;
         if ([System.IO.File]::Exists($rtxStub)) {
             Write-Host $lang.removingStub
-            Start-Process -FilePath $iobu -ArgumentList "/Delete `"$rtxStub`"" -Wait
+            Remove-Item $rtxStub
         }
         if ([System.IO.File]::Exists($tonemapping)) {
             Write-Host $lang.removingTonemapping
-            Start-Process -FilePath $iobu -ArgumentList "/Delete `"$tonemapping`"" -Wait
+            Remove-Item $tonemapping
         }
         Write-Host $lang.insertingVanillaStub
-        Start-Process -FilePath $iobu -ArgumentList "/Copy `"$newStub`" `"$materialsLocation`"" -Wait
+        Copy-Item $newStub $materialsLocation
         Write-Host $lang.insertingVanillaTonemapping 
-        Start-Process -FilePath $iobu -ArgumentList "/Copy `"$newTonemapping`" `"$materialsLocation`"" -Wait
+        Copy-Item $newTonemapping
         Remove-Item $newTonemapping
         Remove-Item $newStub
         Write-Host ""
@@ -368,16 +349,16 @@ Write-Host ""
 # Installs BetterRTX
 if ([System.IO.File]::Exists($rtxStub)) {
     Write-Host $lang.removingStub
-    Start-Process -FilePath $iobu -ArgumentList "/Delete `"$rtxStub`"" -Wait
+    Copy-Item $rtxStub
 }
 if ([System.IO.File]::Exists($tonemapping)) {
     Write-Host $lang.removingTonemapping
-    Start-Process -FilePath $iobu -ArgumentList "/Delete `"$tonemapping`"" -Wait
+    Copy-Item $tonemapping
 }
 Write-Host $lang.insertingStub
-Start-Process -FilePath $iobu -ArgumentList "/Copy `"$newStub`" `"$materialsLocation`"" -Wait
+Copy-Item $newStub $materialsLocation
 Write-Host $lang.insertingTonemapping
-Start-Process -FilePath $iobu -ArgumentList "/Copy `"$newTonemapping`" `"$materialsLocation`"" -Wait
+Copy-Item $newTonemapping $materialsLocation
 if (-not($selection -eq 2)) {
     Remove-Item $newTonemapping
     Remove-Item $newStub
