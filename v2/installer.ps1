@@ -83,6 +83,7 @@ foreach ($mc in (Get-AppxPackage -Name "Microsoft.Minecraft*")) {
     $dataSrc += [PSCustomObject]@{
         FriendlyName    = (Get-AppxPackageManifest -Package $mc).Package.Properties.DisplayName
         InstallLocation = $mc.InstallLocation
+        Preview         = ($mc.InstallLocation -like "*Beta*" -or $mc.FriendlyName -like "*Preview*")
     }
 }
 
@@ -509,7 +510,7 @@ function Get-ApiPacks() {
     }
     
     try {
-        $response = Invoke-WebRequest -Uri "https://bedrock.graphics/api/" -ContentType "application/json"
+        $response = Invoke-WebRequest -Uri "https://bedrock.graphics/api" -ContentType "application/json"
         $apiPacks = $response.Content | ConvertFrom-Json
 
         foreach ($pack in $apiPacks) {
@@ -754,7 +755,12 @@ $LaunchButton.Add_Click({
 
         $LaunchButton.Enabled = $false
 
-        Start-Process -FilePath "$($mc.InstallLocation)\Minecraft.Windows.exe" -PassThru
+        if ($mc.Preview -eq $true) {
+            Start-Process minecraft-preview:
+        }
+        else {
+            Start-Process minecraft:
+        }
 
         $LaunchButton.Visible = $false
     })
@@ -765,7 +771,7 @@ $InstallButton.Font = New-Object System.Drawing.Font("Arial", 12, [System.Drawin
 $InstallButton.Width = $containerWidth
 $InstallButton.Height = $lineHeight
 $InstallButton.Anchor = 'Bottom'
-$InstallButton.Enabled = $false
+$InstallButton.Enabled = $ListBox.Items.Count -eq 1
 
 $InstallButton.Add_Click({
         $StatusLabel.Visible = $false
